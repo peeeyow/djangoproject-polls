@@ -3,10 +3,19 @@
 {% block title %}Question details{% endblock title %}
 
 {% block content %}
-<h1>{{ question.question_name }}</h1>
-<ul>
-  {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }}</li>
-  {% endfor %}
-</ul>
+<form action="{% url "polls:vote" question_id=question.id %}" method="POST">
+  {% csrf_token %}
+  <fieldset>
+    <legend>{{ question.question_text }}</legend>
+    {% if error_message %}
+    <p><strong>{{ error_message }}</p><strong>
+    {% endif %}
+
+    {% for choice in question.choice_set.all %}
+      <input type="radio" name="choice" value="{{ choice.id }}" id="{{ forloop.counter }}">
+      <label for="{{ forloop.counter }}">{{ choice.choice_text }}</label>
+    {% endfor %}
+  </fieldset>
+  <input type="submit" value="Vote">
+</form>
 {% endblock content %}
