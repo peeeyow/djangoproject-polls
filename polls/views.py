@@ -2,27 +2,27 @@ from django.db.models import F
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import generic
 
 from polls.models import Choice, Question
 
 
-def index(request):
-    top5_questions = Question.objects.order_by("-pub_date")[:5]
-    context = {
-        "top5_questions": top5_questions,
-    }
-    return render(request, "polls/index.html", context)
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "top5_questions"
+
+    def get_queryset(self):
+        return Question.objects.order_by("-pub_date")[:5]
 
 
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    context = {"question": question}
-    return render(request, "polls/detail.html", context)
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
 
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", {"question": question})
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
 
 
 def vote(request, question_id):
@@ -40,4 +40,4 @@ def vote(request, question_id):
         )
     choice.votes = F("votes") + 1
     choice.save()
-    return HttpResponseRedirect(reverse("polls:results", kwargs={"question_id": question.id}))
+    return HttpResponseRedirect(reverse("polls:results", kwargs={"pk": question.id}))

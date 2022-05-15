@@ -9,6 +9,6 @@
   {% endfor %}
 </ul>
 
-<a href="{% url "polls:detail" question_id=question.id %}">Vote again?</a>
+<a href="{% url "polls:detail" pk=question.id %}">Vote again?</a>
 {% endblock content %}
 
