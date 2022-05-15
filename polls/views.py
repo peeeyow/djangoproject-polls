@@ -6,8 +6,10 @@ from polls.models import Question
 
 def index(request):
     top5_questions = Question.objects.order_by("-pub_date")[:5]
-    output = ", ".join(question.question_text for question in top5_questions)
-    return HttpResponse(output)
+    context = {
+        "top5_questions": top5_questions,
+    }
+    return render(request, "polls/index.html", context)
 
 
 def detail(request, question_id):

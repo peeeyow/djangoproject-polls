@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 
+{% block title %}Polls{% endblock title %}
+
 {% block content %}
 {% if top5_questions %}
+  <ul>
+    {% for question in top5_questions %}
+    <li>
+      <a href="/polls/{{ question.id }}/">{{ question.question_text }}</a>
+    </li>
+    {% endfor %}
+  </ul>
 {% else %}
   <p>No polls are available.</p>
 {% endif %}
