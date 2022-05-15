@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if top5_questions %}
+{% else %}
+  <p>No polls are available.</p>
+{% endif %}
+{% endblock content %}
