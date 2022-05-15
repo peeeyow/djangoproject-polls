@@ -3,5 +3,10 @@
 {% block title %}Question details{% endblock title %}
 
 {% block content %}
-{{ question }}
+<h1>{{ question.question_name }}</h1>
+<ul>
+  {% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+  {% endfor %}
+</ul>
 {% endblock content %}
